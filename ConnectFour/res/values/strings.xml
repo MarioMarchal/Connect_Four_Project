@@ -6,8 +6,11 @@
     <string name="welcome">Welcome to Connect Four!</string>
     <string name="menu_settings">Settings</string>
     <string name="name1">Enter your Name</string>
-    
-    <string name="button_OK">OK</string>
+    <string name="button_OK">Let\'s Play!</string>
+    <string name="redLabel">Red</string>
+    <string name="blackLabel">Black</string>
+    <string name="selectColor">Select your Colour:</string>
     <string name="title_activity_display_message">My Message</string>
+    <string name="title_activity_grid">GridActivity</string>
 
 </resources>

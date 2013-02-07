@@ -3,35 +3,69 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:orientation="horizontal" >
-      
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_centerHorizontal="true"
-           android:layout_centerVertical="false"
-           android:text="@string/welcome"
-           android:textAlignment="center"
-           android:textSize="50sp" />
 
-       <EditText
-           android:id="@+id/edit_message"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_alignParentLeft="true"
-           android:layout_centerVertical="true"
-           android:ems="10"
-           android:gravity="center_vertical|left"
-           android:hint="@string/name1" >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="false"
+        android:text="@string/welcome"
+        android:textAlignment="center"
+        android:textSize="50sp" />
 
-           <requestFocus />
-       </EditText>
+    <EditText
+        android:id="@+id/edit_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:gravity="center_vertical|left"
+        android:hint="@string/name1" >
 
-       <Button
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_alignParentRight="true"
-           android:layout_centerVertical="true"
-           android:onClick="sendMessage"
-           android:text="@string/button_OK" />
-       
- </RelativeLayout>
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/colorSelect"
+        android:layout_marginRight="19dp"
+        android:onClick="sendMessage"
+        android:text="@string/button_OK" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/edit_message"
+        android:layout_marginTop="38dp"
+        android:text="@string/selectColor"
+        android:textSize="20sp" />
+
+    <RadioGroup
+        android:id="@+id/colorSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1" >
+
+        <RadioButton
+            android:id="@+id/selectBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/blackLabel" />
+
+        <RadioButton
+            android:id="@+id/selectRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/redLabel" />
+    </RadioGroup>
+
+</RelativeLayout>

@@ -4,6 +4,10 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
@@ -29,6 +33,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.connectfour.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.example.connectfour.GridActivity"
+            android:label="@string/title_activity_grid" >
         </activity>
     </application>
 
