@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
 	}
 
 	
-	/** Called when the user clicks the Send button */
+	/** Called when the user clicks the Send button 
 	public void sendMessage(View view) {
 	    // Do something in response to button
 		
@@ -37,5 +37,24 @@ public class MainActivity extends Activity {
 		
 		startActivity(intent);
 	}
+
+
+*/
+	
+	public void sendMessage(View view) {
+	    // Start the grid activity when the button is clicked
+		
+		Intent intent = new Intent(this, GridActivity.class);
+		
+		EditText editText = (EditText) findViewById(R.id.edit_message);
+		String message = editText.getText().toString();
+		intent.putExtra(EXTRA_MESSAGE, message);
+		
+		startActivity(intent);
+	}
+
+	
+
+
 
 }
