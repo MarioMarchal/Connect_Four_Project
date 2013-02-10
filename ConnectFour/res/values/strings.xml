@@ -3,7 +3,7 @@
 
     <string name="app_name">Connect Four</string>
     <string name="hello_world">Hello world!</string>
-    <string name="welcome">Welcome to Connect Four!</string>
+    <string name="welcome">Welcome to Line \'Em Up!</string>
     <string name="menu_settings">Settings</string>
     <string name="name1">Enter your Name</string>
     <string name="button_OK">Let\'s Play!</string>

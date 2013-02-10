@@ -1,15 +1,18 @@
 package com.example.connectfour;
 
 import com.example.connectfour.model.Grid;
+import com.example.connectfour.model.Token;
 
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.view.MotionEvent;
 
 
@@ -19,15 +22,19 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	 private static final String TAG = GameSurfaceView.class.getSimpleName();
 
 	 private GameThread thread;
-	 private Grid theGrid;
+	 private Token theToken;
+	 
+	 
+	 private Bitmap gridBitmap = (BitmapFactory.decodeResource(getResources(), R.drawable.grid));
 
+	 
 	 public GameSurfaceView(Context context) {
 	  super(context);
 	  // adding the callback (this) to the surface holder to intercept events
 	  getHolder().addCallback(this);
 
-	  // create droid and load bitmap
-	  theGrid = new Grid(BitmapFactory.decodeResource(getResources(), R.drawable.grid), 200, 100);
+	  // create a token and load bitmap
+	  theToken = new Token(BitmapFactory.decodeResource(getResources(), R.drawable.redsquare), 100, 100);
 
 	  // create the game loop thread
 	  thread = new GameThread(getHolder(), this);
@@ -70,7 +77,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	 public boolean onTouchEvent(MotionEvent event) {
 	  if (event.getAction() == MotionEvent.ACTION_DOWN) {
 	   // delegating event handling to the grid
-	   theGrid.handleActionDown((int)event.getX(), (int)event.getY());
+	   theToken.handleActionDown((int)event.getX(), (int)event.getY());
 
 	   // check if in the lower part of the screen we exit
 	   if (event.getY() > getHeight() - 50) {
@@ -81,25 +88,31 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	   }
 	  } if (event.getAction() == MotionEvent.ACTION_MOVE) {
 	   // the gestures
-	   if (theGrid.isTouched()) {
+	   if (theToken.isTouched()) {
 	    // the grid was picked up and is being dragged
-	    theGrid.setX((int)event.getX());
-	    theGrid.setY((int)event.getY());
+	    theToken.setX((int)event.getX());
+	    theToken.setY((int)event.getY());
 	   }
 	  } if (event.getAction() == MotionEvent.ACTION_UP) {
 	   // touch was released
-	   if (theGrid.isTouched()) {
-	    theGrid.setTouched(false);
+	   if (theToken.isTouched()) {
+	    theToken.setTouched(false);
 	   }
 	  }
 	  return true;
 	 }
 
-	 @Override
-	 protected void onDraw(Canvas canvas) {
+	 
+	 
+	 protected void onDraw(Canvas canvas, Rect fullCanvas) {
 	  // fills the canvas with black
-	  canvas.drawColor(Color.BLACK);
-	  theGrid.draw(canvas);
+	  //canvas.drawColor(Color.BLACK);	  
+	  
+		// fill the entire canvas with the stretched grid
+	  canvas.drawBitmap(gridBitmap, null, fullCanvas, null);
+	  
+	  //add a token to canvas
+	  theToken.draw(canvas);
 	 }
 	
 	
