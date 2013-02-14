@@ -7,58 +7,30 @@ import android.view.MotionEvent;
 public class Grid {
 
  private Bitmap bitmap; // the actual bitmap
- private int x;   // the X coordinate
- private int y;   // the Y coordinate
- private boolean touched; // if droid is touched/picked up
+ private int rowHeight;   //
+ private int columnWidth;   // 
 
- public Grid(Bitmap bitmap, int x, int y) {
+ public Grid(Bitmap bitmap, int h, int w) {
   this.bitmap = bitmap;
-  this.x = x;
-  this.y = y;
+  this.rowHeight = h;
+  this.columnWidth = w;
+  
+  //resize the bitmap for each square
+  this.bitmap = Bitmap.createScaledBitmap(this.bitmap, columnWidth, rowHeight, true);
+  
  }
-
- public Bitmap getBitmap() {
-  return bitmap;
+  
+ 
+ public void draw(Canvas canvas) { 
+	 
+  //canvas.drawBitmap(bitmap, left, top, null);	 
+	 for(int i = 0; i < 6; i++){		// loop for rows
+		 for(int k = 0; k < 7; k++){	//loop for columns
+			 //
+			 canvas.drawBitmap(bitmap,  (k * columnWidth), ((i * rowHeight) + (2 * rowHeight)), null);		 
+		 }	 
+	 }
+	 
  }
- public void setBitmap(Bitmap bitmap) {
-  this.bitmap = bitmap;
- }
- public int getX() {
-  return x;
- }
- public void setX(int x) {
-  this.x = x;
- }
- public int getY() {
-  return y;
- }
- public void setY(int y) {
-  this.y = y;
- }
-
- public boolean isTouched() {
-  return touched;
- }
-
- public void setTouched(boolean touched) {
-  this.touched = touched;
- }
-
- public void draw(Canvas canvas) {
-  canvas.drawBitmap(bitmap, x - (bitmap.getWidth() / 2), y - (bitmap.getHeight() / 2), null);
- }
-
- public void handleActionDown(int eventX, int eventY) {
-  if (eventX >= (x - bitmap.getWidth() / 2) && (eventX <= (x + bitmap.getWidth()/2))) {
-   if (eventY >= (y - bitmap.getHeight() / 2) && (y <= (y + bitmap.getHeight() / 2))) {
-    // grid touched
-    setTouched(true);
-   } else {
-    setTouched(false);
-   }
-  } else {
-   setTouched(false);
-  }
-
- }
+ 
 }

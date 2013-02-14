@@ -59,13 +59,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/blackLabel" />
+            android:text="@string/redLabel" />
 
         <RadioButton
             android:id="@+id/selectRed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/redLabel" />
+            android:text="@string/blackLabel" />
     </RadioGroup>
 
 </RelativeLayout>
