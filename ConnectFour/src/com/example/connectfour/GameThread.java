@@ -27,27 +27,12 @@ public class GameThread extends Thread {
 	  this.running = running;
 	 }
 
-	 /*
-	 @Override
-	 public void run() {
-	  long tickCount = 0L;
-	  Log.d(TAG, "Starting game loop");
-	  while (running) {
-	   tickCount++;
-	   // update game state
-	   // render state to the screen
-	  }
-	  Log.d(TAG, "Game loop executed " + tickCount + " times");
-	 }
-	 */
-	 
+		 
 	 
 	 public void run() {
 		 long tickCount = 0L;
 		  Canvas canvas;
-		  Rect gridRec;
 		  Rect exitRec;
-		  Rect tokenRec;
 		  
 		  Log.d(TAG, "Starting game loop");
 		    
@@ -65,9 +50,6 @@ public class GameThread extends Thread {
 		  	  int rowheight = h/9;
 		  	  int columnwidth = w/7;
 		  	  
-		  	  // the rect for the grid
-		  	  //gridRec = new Rect(0, (2*rowheight), w, (8*rowheight));
-		  	  
 		  	  // the rect fo the exit button
 		  	  exitRec = new Rect(0, (h-rowheight), w, h);
 		  	  
@@ -75,7 +57,7 @@ public class GameThread extends Thread {
 		  	 this.gamePanel.setSizes((rowheight), (columnwidth));
 		  	  
 		     // draws the canvas on the panel
-		     this.gamePanel.onDraw(canvas, exitRec);
+		     this.gamePanel.draw(canvas, exitRec);
 		    }
 		   } finally {
 		    // in case of an exception the surface is not left in
@@ -93,19 +75,9 @@ public class GameThread extends Thread {
 		   try {
 		    canvas = this.surfaceHolder.lockCanvas();
 		    synchronized (surfaceHolder) {
-		    	
-		    //get size of canvas and make a rect taking up the whole surface
-		    	/*
-		      int h = canvas.getHeight();
-		  	  int w = canvas.getWidth();		  	  
-		  	  Rect aRec = new Rect(0, 0, w, h);
-		  	  */
-		  	  
-		  	  
-		    	
 		     // update game state
 		     // draws the canvas on the panel
-		     this.gamePanel.onDraw(canvas, exitRec);
+		     this.gamePanel.draw(canvas, exitRec);
 		    }
 		   } finally {
 		    // in case of an exception the surface is not left in

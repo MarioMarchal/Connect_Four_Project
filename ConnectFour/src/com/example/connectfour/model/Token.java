@@ -2,7 +2,6 @@ package com.example.connectfour.model;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.view.MotionEvent;
 
 public class Token {
 
@@ -48,6 +47,7 @@ public class Token {
   canvas.drawBitmap(bitmap, x - (bitmap.getWidth() / 2), y - (bitmap.getHeight() / 2), null);
  }
 
+ //method used to check if the token has been touched
  public void handleActionDown(int eventX, int eventY) {
   if (eventX >= (x - bitmap.getWidth() / 2) && (eventX <= (x + bitmap.getWidth()/2))) {
    if (eventY >= (y - bitmap.getHeight() / 2) && (y <= (y + bitmap.getHeight() / 2))) {

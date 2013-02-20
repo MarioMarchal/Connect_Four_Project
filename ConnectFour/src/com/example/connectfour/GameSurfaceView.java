@@ -19,18 +19,21 @@ import android.view.MotionEvent;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 	
-
 	 private static final String TAG = GameSurfaceView.class.getSimpleName();
+	 
+	 private int currentplayer;
 
 	 private GameThread thread;
 	 private Token theToken;
 	 private Grid theGrid;
 	 
-	 private Bitmap gridBitmap = (BitmapFactory.decodeResource(getResources(), R.drawable.grid));
 	 private Bitmap gridSquareBitmap = (BitmapFactory.decodeResource(getResources(), R.drawable.gridsquare));
-	 
+	 private Bitmap redsquare = (BitmapFactory.decodeResource(getResources(), R.drawable.redsquare));
+	 private Bitmap blacksquare = (BitmapFactory.decodeResource(getResources(), R.drawable.blacksquare));
+	 private Bitmap dropsquare = (BitmapFactory.decodeResource(getResources(), R.drawable.dropsquare));
 	 private Bitmap exitBitmap = (BitmapFactory.decodeResource(getResources(), R.drawable.exit));
-	 private Bitmap redToken = (BitmapFactory.decodeResource(getResources(), R.drawable.redsquare));
+	 private Bitmap redToken = (BitmapFactory.decodeResource(getResources(), R.drawable.redtoken));
+	 private Bitmap blackToken = (BitmapFactory.decodeResource(getResources(), R.drawable.blacktoken));
 	 
 	 private int rowHeight = 0;
 	 
@@ -39,9 +42,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	  // adding the callback (this) to the surface holder to intercept events
 	  getHolder().addCallback(this);
 
-
 	  // create a token and load bitmap	  	  
-	  theToken = new Token(redToken, 100, 100);
+	  theToken = new Token(redToken, 30, 30);
 
 	  // create the game loop thread
 	  thread = new GameThread(getHolder(), this);
@@ -54,10 +56,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	 //method to set size of the token and initialize the grid
 	 public void setSizes(int h, int w){
 		 redToken = Bitmap.createScaledBitmap(redToken, (w - w/5), (h - h/5), true);
+		 blackToken = Bitmap.createScaledBitmap(blackToken, (w - w/5), (h - h/5), true);
+		 
+		 //set the current token
+		 currentplayer = 1;
 		 theToken.setBitmap(redToken);
 		 
 		 rowHeight = h;
-		 theGrid = new Grid(gridSquareBitmap, h, w);
+		 theGrid = new Grid(this, gridSquareBitmap, redsquare, blacksquare, dropsquare, h, w);
 	 }
 	 
 	 
@@ -110,6 +116,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	   }
 	  }
 	  
+	  
+	  //
 	  if (event.getAction() == MotionEvent.ACTION_MOVE) {
 	   // the gestures
 	   if (theToken.isTouched()) {
@@ -119,45 +127,74 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	   }
 	  }
 	  
+	  
+	  //
 	  if (event.getAction() == MotionEvent.ACTION_UP) {
 	   // touch was released
 	   if (theToken.isTouched()) {
 	    theToken.setTouched(false);
+	    
+	    //check if inside a drop zone and update grid and state array
+	    theGrid.tokenDropped((int)event.getX(), (int)event.getY());
+	    
+	    //check the player, change token, replace the token at origin
+	    	    
+	    //currentplayer = 1;
+		//theToken.setBitmap(redToken);
+	    
 	   }
 	  }
+	  
 	  return true;
 	 }
 
+	 //method that changes the current player
+	 public void changePlayer(){
+		 if (currentplayer == 1){
+			 currentplayer = 2;
+			 theToken.setBitmap(blackToken);
+		 }
+		 else{
+			 currentplayer = 1;
+			 theToken.setBitmap(redToken);
+		 }
+		 
+		 //re-initialize the token
+		 theToken.setX(30);
+		 theToken.setY(30);
+	 }
+	 
+	 // returns the currentplayer
+	 public int getPlayer(){
+		 return currentplayer;
+	 }
 	 
 	 
-	 protected void onDraw(Canvas canvas, Rect exitCanvas) {
+	 protected void draw(Canvas canvas, Rect exitCanvas) {
 	  // fills the canvas with black
-	  canvas.drawColor(Color.BLACK);	  
+	  canvas.drawColor(Color.WHITE);	  	  
 	  
-	// fill the entire gridcanvas with the stretched grid
-	  //canvas.drawBitmap(gridBitmap, null, gridCanvas, null);
-	  
-	  
-	  //test
+	  //draw the grid
 	  theGrid.draw(canvas);
 	  
-	  //Bitmap test = Bitmap.createScaledBitmap(gridSquareBitmap, 10, 10, true);
-	  //canvas.drawBitmap(test,  0, 0, null);
-	  
-	  
-	  
+	  	  
 	  //add a token to canvas
 	  theToken.draw(canvas);
 	  
 	  //Draw "Exit" at bottom of screen
 	  canvas.drawBitmap(exitBitmap, null, exitCanvas, null);
 	  
-	  /*
+	  
 	  Paint textPaint = new Paint();
-	  textPaint.setColor(Color.RED);
 	  textPaint.setTextSize(50);
-	  canvas.drawText("Exit", 0, getHeight(), textPaint);
-	  */
+	  if (currentplayer == 1){
+		  textPaint.setColor(Color.RED);
+		  canvas.drawText("Player 1", 250, 50, textPaint);
+	  }
+	  else{
+		  textPaint.setColor(Color.BLACK);
+		  canvas.drawText("Player 2", 250, 50, textPaint);
+	  }	  
 	 
 	 }
 	
