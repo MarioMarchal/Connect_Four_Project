@@ -21,7 +21,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	
 	 private static final String TAG = GameSurfaceView.class.getSimpleName();
 	 
-	 private int currentplayer;
+	 private Context gridActivity;
 
 	 private GameThread thread;
 	 private Token theToken;
@@ -36,9 +36,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	 private Bitmap blackToken = (BitmapFactory.decodeResource(getResources(), R.drawable.blacktoken));
 	 
 	 private int rowHeight = 0;
+	 private int currentplayer;
 	 
+	 //Constructor
 	 public GameSurfaceView(Context context) {
-	  super(context);
+		 super(context);
+		 gridActivity = context;
+		 
 	  // adding the callback (this) to the surface holder to intercept events
 	  getHolder().addCallback(this);
 
@@ -65,6 +69,21 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		 rowHeight = h;
 		 theGrid = new Grid(this, gridSquareBitmap, redsquare, blacksquare, dropsquare, h, w);
 	 }
+	 
+	 
+	// Function that ends the game
+	 public void endGame(){		 
+		 thread.setRunning(false);
+		 //((Activity) gridActivity).finish();
+	 }
+		
+	 
+	 // 
+	 public void displayWinner(int player){
+		 //winner =  "Player " + player + " Wins!";
+		  ((GridActivity) gridActivity).displayWinnerMenu(("Player " + player + " Wins!"));
+	 }
+	 
 	 
 	 
 	 @Override
@@ -98,12 +117,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	  }
 	  Log.d(TAG, "Thread was shut down cleanly");
 	 }
-
 	 
 	 
 	 @Override
 	 public boolean onTouchEvent(MotionEvent event) {
-	  if (event.getAction() == MotionEvent.ACTION_DOWN) {
+	  
+		 if (event.getAction() == MotionEvent.ACTION_DOWN) {
 	   // delegating event handling to the grid
 	   theToken.handleActionDown((int)event.getX(), (int)event.getY());
 
@@ -114,20 +133,19 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	   } else {
 	    Log.d(TAG, "Coords: x=" + event.getX() + ",y=" + event.getY());
 	   }
-	  }
-	  
+	  }	  	  
 	  
 	  //
 	  if (event.getAction() == MotionEvent.ACTION_MOVE) {
 	   // the gestures
 	   if (theToken.isTouched()) {
 	    // the grid was picked up and is being dragged
+		// continuously update the position of the token
 	    theToken.setX((int)event.getX());
 	    theToken.setY((int)event.getY());
 	   }
 	  }
-	  
-	  
+	  	  
 	  //
 	  if (event.getAction() == MotionEvent.ACTION_UP) {
 	   // touch was released
@@ -135,19 +153,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	    theToken.setTouched(false);
 	    
 	    //check if inside a drop zone and update grid and state array
-	    theGrid.tokenDropped((int)event.getX(), (int)event.getY());
-	    
-	    //check the player, change token, replace the token at origin
-	    	    
-	    //currentplayer = 1;
-		//theToken.setBitmap(redToken);
-	    
+	    theGrid.tokenDropped((int)event.getX(), (int)event.getY());	    
 	   }
-	  }
-	  
+	  }	  
 	  return true;
 	 }
 
+	 
 	 //method that changes the current player
 	 public void changePlayer(){
 		 if (currentplayer == 1){
@@ -157,9 +169,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		 else{
 			 currentplayer = 1;
 			 theToken.setBitmap(redToken);
-		 }
-		 
-		 //re-initialize the token
+		 }		 
+		 //re-initialize the token to start location
 		 theToken.setX(30);
 		 theToken.setY(30);
 	 }
@@ -169,14 +180,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		 return currentplayer;
 	 }
 	 
-	 
+	 // Draws all the elements to the surface
 	 protected void draw(Canvas canvas, Rect exitCanvas) {
-	  // fills the canvas with black
+	  // fills the canvas with white
 	  canvas.drawColor(Color.WHITE);	  	  
 	  
 	  //draw the grid
-	  theGrid.draw(canvas);
-	  
+	  theGrid.draw(canvas);	  
 	  	  
 	  //add a token to canvas
 	  theToken.draw(canvas);
@@ -184,7 +194,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	  //Draw "Exit" at bottom of screen
 	  canvas.drawBitmap(exitBitmap, null, exitCanvas, null);
 	  
-	  
+	  //Draw the current player to the screen
 	  Paint textPaint = new Paint();
 	  textPaint.setTextSize(50);
 	  if (currentplayer == 1){
@@ -197,10 +207,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	  }	  
 	 
 	 }
-	
-	
-
-	
 	
 	
 }

@@ -1,10 +1,15 @@
 package com.example.connectfour.model;
 
+import com.example.connectfour.GameSurfaceView;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.util.Log;
 
 public class Token {
 
+	private static final String TAG = GameSurfaceView.class.getSimpleName();
+	
  private Bitmap bitmap; // the actual bitmap
  private int x;   // the X coordinate
  private int y;   // the Y coordinate
@@ -50,9 +55,13 @@ public class Token {
  //method used to check if the token has been touched
  public void handleActionDown(int eventX, int eventY) {
   if (eventX >= (x - bitmap.getWidth() / 2) && (eventX <= (x + bitmap.getWidth()/2))) {
-   if (eventY >= (y - bitmap.getHeight() / 2) && (y <= (y + bitmap.getHeight() / 2))) {
+   
+	if (eventY >= (y - (bitmap.getHeight() / 2)) && (eventY <= (y + (bitmap.getHeight() / 2)))) {
     // grid touched
     setTouched(true);
+    
+    Log.d(TAG, "Token set to touched (true) ");
+    
    } else {
     setTouched(false);
    }

@@ -12,5 +12,8 @@
     <string name="selectColor">Select your Colour:</string>
     <string name="title_activity_display_message">My Message</string>
     <string name="title_activity_grid">GridActivity</string>
+    <string name="new_game">Play Again</string>
+    <string name="exit">Exit</string>
+    <string name="winner_text">Player ? wins!</string>
 
 </resources>

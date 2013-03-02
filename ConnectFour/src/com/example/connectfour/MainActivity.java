@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 public class MainActivity extends Activity {
 
-	public final static String EXTRA_MESSAGE = "com.example.connectfour.EXTRA_MESSAGE";
+	//public final static String EXTRA_MESSAGE = "com.example.connectfour.EXTRA_MESSAGE";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +41,15 @@ public class MainActivity extends Activity {
 
 */
 	
+	// Start the grid activity when the button is clicked
 	public void sendMessage(View view) {
-	    // Start the grid activity when the button is clicked
-		
+	    
 		Intent intent = new Intent(this, GridActivity.class);
-		
+		/*
 		EditText editText = (EditText) findViewById(R.id.edit_message);
 		String message = editText.getText().toString();
 		intent.putExtra(EXTRA_MESSAGE, message);
-		
+		*/
 		startActivity(intent);
 	}
 
