@@ -36,7 +36,8 @@
         </activity>
         <activity
             android:name="com.example.connectfour.GridActivity"
-            android:label="@string/title_activity_grid" >
+            android:label="@string/title_activity_grid" 
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

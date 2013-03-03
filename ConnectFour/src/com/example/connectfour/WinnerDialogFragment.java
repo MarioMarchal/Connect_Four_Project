@@ -20,6 +20,8 @@ public class WinnerDialogFragment extends DialogFragment {
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         
+		this.setCancelable(false);
+		
 		// Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_DARK);
         
@@ -44,6 +46,9 @@ public class WinnerDialogFragment extends DialogFragment {
         	.setPositiveButton(R.string.new_game, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // reset the game
+                	   int[] temp = new int[42];
+                	   ((GridActivity) getActivity()).gamePointer.theGrid.setCurrentState(temp);
+                	   
                 	   ((GridActivity) getActivity()).reset();
                 	   
                    }
@@ -52,7 +57,8 @@ public class WinnerDialogFragment extends DialogFragment {
                .setNegativeButton(R.string.exit, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // Exit
-                	   
+                	   int[] temp = new int[42];
+                	   ((GridActivity) getActivity()).gamePointer.theGrid.setCurrentState(temp);
                 	   ((GridActivity) getActivity()).exit();
                    }
                });

@@ -8,6 +8,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -23,9 +24,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	 
 	 private Context gridActivity;
 
-	 private GameThread thread;
+	 protected GameThread thread;
 	 private Token theToken;
-	 private Grid theGrid;
+	 protected Grid theGrid;
 	 
 	 private Bitmap gridSquareBitmap = (BitmapFactory.decodeResource(getResources(), R.drawable.gridsquare));
 	 private Bitmap redsquare = (BitmapFactory.decodeResource(getResources(), R.drawable.redsquare));
@@ -37,11 +38,16 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	 
 	 private int rowHeight = 0;
 	 private int currentplayer;
+	 protected boolean created;
 	 
 	 //Constructor
 	 public GameSurfaceView(Context context) {
+	
 		 super(context);
+		 Log.d(TAG, "New GameSurfaceView created!!!");
+		 
 		 gridActivity = context;
+		 created = false;
 		 
 	  // adding the callback (this) to the surface holder to intercept events
 	  getHolder().addCallback(this);
@@ -68,6 +74,25 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		 
 		 rowHeight = h;
 		 theGrid = new Grid(this, gridSquareBitmap, redsquare, blacksquare, dropsquare, h, w);
+		 
+		 
+		 ///////////////////
+		 SharedPreferences storageFile = ((Activity) gridActivity).getPreferences(Context.MODE_PRIVATE);
+		 String GRID_STATE = "gridstate";
+		 
+	  	// Restore state members from saved instance
+	  	int[] temp = new int[42];
+	  	
+	  	for (int i = 0; i < temp.length; i++){
+	  		temp[i] = storageFile.getInt((GRID_STATE + i), 0);	  		
+	  	}
+	  	
+	  	//make sure the surface and grid are created	  	
+	    theGrid.setCurrentState(temp);
+	  
+		 
+		 
+		 
 	 }
 	 
 	 
@@ -96,8 +121,29 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	 public void surfaceCreated(SurfaceHolder holder) {
 	  // at this point the surface is created and
 	  // we can safely start the game loop
-	  thread.setRunning(true);
-	  thread.start();
+	
+	  String temp1 = "NEW";			  
+	  Log.d(TAG, "starting thread!!! state: " + thread.getState());
+	  
+	  //if the tread is new start it
+	  if( ((thread.getState()).toString()).equals(temp1)){
+		  thread.setRunning(true);
+		  thread.start();
+	  }
+	  //else create new thread
+	  else{
+		  thread = new GameThread(getHolder(), this);
+		  thread.setRunning(true);
+		  thread.start();
+	  }
+		
+	  created = true;
+	  
+	  
+	  
+	  
+	  
+	  
 	 }
 	 
 

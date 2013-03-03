@@ -1,16 +1,18 @@
 package com.example.connectfour.model;
 
 import com.example.connectfour.GameSurfaceView;
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.util.Log;
 
 public class Grid {
+	
+	private static final String TAG = Grid.class.getSimpleName();
 
-private int[][] currentState = new int[6][7];	//stores the state of our grid
-private int[][] player1Grid = new int [6][7];	// stores the location of player 1's tokens
-private int[][] player2Grid = new int [6][7];	// stores the location of player 2's tokens
-private int[] columnFill = {0, 0, 0, 0, 0, 0, 0};	// stores how full each column is.
+protected int[][] currentState = new int[6][7];	//stores the state of our grid
+protected int[][] player1Grid = new int [6][7];	// stores the location of player 1's tokens
+protected int[][] player2Grid = new int [6][7];	// stores the location of player 2's tokens
+protected int[] columnFill = {0, 0, 0, 0, 0, 0, 0};	// stores how full each column is.
 	
  private Bitmap emptysquare; //
  private Bitmap redsquare;
@@ -23,6 +25,9 @@ private int[] columnFill = {0, 0, 0, 0, 0, 0, 0};	// stores how full each column
 
  // Grid Constructor
  public Grid(GameSurfaceView gameSurface, Bitmap empty, Bitmap red, Bitmap black, Bitmap drop, int h, int w) {
+	 
+	 Log.d(TAG, "** A Grid is Created!!! **");
+	 
   emptysquare = empty;
   redsquare = red;
   blacksquare = black;
@@ -39,6 +44,8 @@ private int[] columnFill = {0, 0, 0, 0, 0, 0, 0};	// stores how full each column
   dropsquare = Bitmap.createScaledBitmap(dropsquare, columnWidth, rowHeight, true);
  }
  
+ 
+  
  
  // Function to draw the Grid
  public void draw(Canvas canvas) {	 
@@ -93,8 +100,18 @@ private int[] columnFill = {0, 0, 0, 0, 0, 0, 0};	// stores how full each column
 			 	 
 			 	/** check for winner **/
 			 	 if (winner != 0){
+			 		 
+			 		 /*
+			 		 //reset the currentState
+			 		for(int j = 0; j < 6; j++){		// loop for rows
+						 for(int k = 0; k < 7; k++){	//loop for columns					
+							currentState[j][k] = 0;		 
+						 }	 
+					 }	 	
+			 		 */
+			 		 
 			 		 // display winner
-			 		 gamePanel.displayWinner(winner);
+			 		 gamePanel.displayWinner(winner);			 		 
 			 		 // end game
 			 		 //gamePanel.endGame();			 		 
 			 	 }
@@ -246,7 +263,42 @@ private int[] columnFill = {0, 0, 0, 0, 0, 0, 0};	// stores how full each column
 		 			}
 		 		}
 		 		return false;
-		 	} 	
+		 	}
+
  
- 
+/*		 	
+ 	protected int[][] currentState = new int[6][7];	//stores the state of our grid
+ 	protected int[][] player1Grid = new int [6][7];	// stores the location of player 1's tokens
+ 	protected int[][] player2Grid = new int [6][7];	// stores the location of player 2's tokens
+ 	protected int[] columnFill = {0, 0, 0, 0, 0, 0, 0};	// stores how full each column is.
+ 	*/
+	
+ 	//
+ 	 public int[] getCurrentState() {
+ 			// convert from 2 dimensional array to single dimension and return
+ 		 	int[] temp = new int[42];
+ 		 	for(int i = 0; i < 6; i++){		// loop for rows
+ 				 for(int k = 0; k < 7; k++){	//loop for columns
+ 					 // 
+ 					//temp[i+k] = currentState[i][k];
+ 					temp[i+k+(i*6)] = currentState[i][k];
+ 				 }	 
+ 			 }	 	
+ 			return temp;
+ 		}
+ 	
+ 	//
+ 	public void setCurrentState(int[] temp) {
+ 		
+			// convert from 1 dimensional array to 2 dimension		 	
+		 	for(int i = 0; i < 6; i++){		// loop for rows
+				 for(int k = 0; k < 7; k++){	//loop for columns					
+					currentState[i][k] = temp[i+k+(i*6)];		 
+				 }	 
+			 }	 	
+			return;			
+		}
+ 	 
+ 	 
+
 }
