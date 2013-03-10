@@ -2,16 +2,16 @@ package com.example.connectfour;
 
 import android.os.Bundle;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
+
 
 public class GridActivity extends Activity {
 	
@@ -26,95 +26,178 @@ public class GridActivity extends Activity {
 	
 	@Override
 	// 
-    public void onBackPressed() {
+    public void onBackPressed() {		
 		this.exit();
     }
 	
 	
-    @Override
+    @SuppressLint("NewApi")
+	@Override
     public void onCreate(Bundle savedInstanceState) {    	
     	Log.d(TAG, "onCreat of GridActivity");
-    	super.onCreate(savedInstanceState);
-    	
+    	super.onCreate(savedInstanceState);    	
     	   
         // requesting to turn the title OFF
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         // making it full screen
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
+    	
+    	
+    	ActionBar actionBar = getActionBar();
+    	//actionBar.setDisplayShowTitleEnabled(false);
+    	actionBar.setSubtitle("Play fool!");
+    	actionBar.setTitle("You playin Line 'Em Up!!");
+    	
+    	//enable the icon in the action bar to be a home button
+    	actionBar.setHomeButtonEnabled(true);
+    	
+    	/*
+    	actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+    	
+    	Tab tabOne = actionBar.newTab();
+    	
+    	tabOne	.setText("First Tab")
+		    	.setIcon(R.drawable.dropsquare)
+		    	.setContentDescription("Tab the First");
+		    	//.setTabListener(null);//(new TabListener<MyFragment>(this, R.id.fragmentContainer, MyFragment.class));
+    	
+    	actionBar.addTab(tabOne);
+    	*/
+    	
+    	// Show the Action Bar
+    	actionBar.show();
+    	
+    	
+    	
         // set our MainGamePanel as the View
         gamePointer = new GameSurfaceView(this);
         setContentView(gamePointer);
-        //setContentView(new GameSurfaceView(this));
         
-        Log.d(TAG, "View added");
-        
-        /*
-        // Check whether we're recreating a previously destroyed instance
-        if (savedInstanceState != null) { 
-        	Log.d(TAG, "Inside onCreate. Savedinstancestate not null ... load state");
-        	// Restore state members from saved instance
-		    gamePointer.theGrid.setCurrentState(savedInstanceState.getIntArray(GRID_STATE));
-        } 
-        */
-        
+        Log.d(TAG, "View added");        
         
     }
    
+    /** action bar related**/
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+		    case (android.R.id.home) :
+		    	this.onBackPressed();
+			    return true;
+		    default:
+		    	return super.onOptionsItemSelected(item);
+	    }
+    }
     
     
-     
-	 
+    
+    
+    
+    
+    ///////////////
 	 private static final String GRID_STATE = "gridstate";
 	 private static final String PLAYER1 = "player1";
 	 private static final String PLAYER2 = "player2";
 	 private static final String COLUMNFILL = "columnfill";
-	 // current player, total scores
+	 private static final String CURRENTPLAYER = "currentplayer";
+	 // , total scores     
+     
 	 
-	 
-	     
-    
-    
     protected void onPause(){
     	Log.d(TAG, "onPause called...");
   	  	super.onPause();
   	  	
   	  	gamePointer.thread.setRunning(false);
   	  	
-  	    SharedPreferences storageFile = this.getPreferences(Context.MODE_PRIVATE);
+  	    SharedPreferences storageFile = this.getPreferences(Context.MODE_PRIVATE);  	  	
+  	  	SharedPreferences.Editor editor = storageFile.edit();  	  	
   	  	
-  	  	SharedPreferences.Editor editor = storageFile.edit();
+  	  	//loop until the grid is actually created... useful on exit after win, gives time to reset
+ 	   while( !(this.gamePointer.created) ){                		   
+ 	   }	//empty loop
   	  	
+  	  	//Current State
   	  	int[] temp = gamePointer.theGrid.getCurrentState();
   	  	for (int i = 0; i < temp.length; i++){
   	  		editor.putInt((GRID_STATE + i), temp[i]);  	  		
   	  	}  	
-		  	  	
-		editor.commit();
+		
+  	  	// player1 State
+  	  	int[] temp1 = gamePointer.theGrid.getPlayer1Grid();
+  	  	for (int i = 0; i < temp1.length; i++){
+  	  		editor.putInt((PLAYER1 + i), temp1[i]);  	  		
+  	  	}  	
   	  	
+  	  	// player2 State
+  	  	int[] temp2 = gamePointer.theGrid.getPlayer2Grid();
+  	  	for (int i = 0; i < temp2.length; i++){  	  		
+  	  		editor.putInt((PLAYER2 + i), temp2[i]);  	  		
+  	  	}
+  	  	
+  	  	// columnFill State
+  	  	int[] temp3 = gamePointer.theGrid.getColumnFill();
+  	  	for (int i = 0; i < temp3.length; i++){
+  	  		editor.putInt((COLUMNFILL + i), temp3[i]);  	  		
+  	  	}  	
+  	  	
+  	  	editor.putInt((CURRENTPLAYER), gamePointer.getPlayer());  	  	
+  	  	
+  	  	// save everything
+		editor.commit();  	  	
     }
     
+  
+    //
+    protected void loadSavedState(){
+    	
+    	SharedPreferences storageFile = this.getPreferences(Context.MODE_PRIVATE);
+		 
+	 	// Restore currentstate
+	 	int[] temp = new int[42];	 	
+	 	for (int i = 0; i < temp.length; i++){
+	 		temp[i] = storageFile.getInt((GRID_STATE + i), 0);	  		
+	 	}	 	
+	 	//set	  	
+	   gamePointer.theGrid.setCurrentState(temp);
+	   
+	   
+	   // Restore player1 state
+	 	int[] temp1 = new int[42];	 	
+	 	for (int i = 0; i < temp1.length; i++){
+	 		temp1[i] = storageFile.getInt((PLAYER1 + i), 0);	  		
+	 	}	 	
+	 	//set	  	
+	   gamePointer.theGrid.setPlayer1Grid(temp1);
+   
+	   // Restore player2 state
+	 	int[] temp2 = new int[42];	 	
+	 	for (int i = 0; i < temp2.length; i++){
+	 		temp2[i] = storageFile.getInt((PLAYER2 + i), 0);	  		
+	 	}	 	
+	 	//set	  	
+	   gamePointer.theGrid.setPlayer2Grid(temp2);
+	   
+	   
+	   // Restore columnfill state
+	 	int[] temp3 = new int[7];	 	
+	 	for (int i = 0; i < temp3.length; i++){
+	 		temp3[i] = storageFile.getInt((COLUMNFILL + i), 0);	  		
+	 	}	 	
+	 	//set	  	
+	   gamePointer.theGrid.setColumnFill(temp3);
+	   
+	   gamePointer.setPlayer(storageFile.getInt((CURRENTPLAYER), 0));
+	   
+	   return;    	
+    }
     
+     
+    /////////////
     protected void onResume(){
     	Log.d(TAG, "onResume called...");
-  	  	super.onResume();
-  	  	
-  	  	/*
-  	  // Restore state members from saved instance
-  	  	int[] temp = new int[42];
-  	  	
-  	  	for (int i = 0; i < temp.length; i++){
-	  		temp[i] = storageFile.getInt((GRID_STATE + i), 0);
-	  		//temp[i] = 0;
-	  	}
-  	  	
-  	  	//make sure the surface and grid are created
-  	  	//while(!(gamePointer.created)){  	  		
-  	  	//}
-  	  	//wait;
-	    gamePointer.theGrid.setCurrentState(temp);
-	    */
-	    
+  	  	super.onResume();	    
     }
     
     
@@ -124,60 +207,21 @@ public class GridActivity extends Activity {
 	  super.onDestroy();
 	  this.exit();
 	 }
-	
-
 	 
 	 @Override
 	 protected void onStop() {		
 		Log.d(TAG, "Stopping... onStop called!!");
-		super.onStop();		
-
-		//save the game state data
-		
+		super.onStop();			
 	 }
 	 
 	 
 	 /////////////////////////////////////
 	 
-	 
-	 
-
 	 @Override
-	 public void onSaveInstanceState(Bundle savedInstanceState) {
-		 Log.d(TAG, "Saving State ");
-		 
-		 // Save the user's current game state
-	     savedInstanceState.putIntArray(GRID_STATE, gamePointer.theGrid.getCurrentState());
-	     
-	     // Always call the superclass so it can save the view hierarchy state
-	     super.onSaveInstanceState(savedInstanceState);
-	 }
-
-	 
-	 @Override
-	 public void onRestoreInstanceState(Bundle savedInstanceState) {
-		    
-		 Log.d(TAG, "Restore state Called...");
-		 
-		 // Always call the superclass so it can restore the view hierarchy
-		    super.onRestoreInstanceState(savedInstanceState);
-		   
-		    // Restore state members from saved instance
-		    gamePointer.theGrid.setCurrentState(savedInstanceState.getIntArray(GRID_STATE));
-		    
-		}
-	 
-	 ///////////////////////////////////////
-	 
-	 @Override
-	 protected void onStart() {
-		
+	 protected void onStart() {		
 		Log.d(TAG, "onStart called...");
-		super.onStart();		
-		
-		//load the saved Game state data
-		
-	  
+		super.onStart();				
+		//load the saved Game state data	  
 	 }
 	 
 	 
@@ -191,6 +235,15 @@ public class GridActivity extends Activity {
 	 //Reset
 	 @SuppressLint("NewApi")
 	public void reset(){
+		 
+		 //reset all the states
+		int[] temp = new int[42];
+  	   	gamePointer.theGrid.setCurrentState(temp);
+  	    gamePointer.theGrid.setPlayer1Grid(temp);
+  	    gamePointer.theGrid.setPlayer2Grid(temp);
+  	   	int[] temp1 = new int[7];
+  	   	gamePointer.theGrid.setColumnFill(temp1);
+  	   	gamePointer.setPlayer(1);		 
 		 
 		 // to save state call onPause
 		 this.onPause();
@@ -213,9 +266,7 @@ public class GridActivity extends Activity {
 		winnerDialog.setMessage(winner);
 		//winnerDialog.setStyle(2, );
 		winnerDialog.show(fragmentManager, "tag");
-		
-		
-		
+			
 /*
 		// Create the new Dialog.
 		Dialog dialog = new Dialog(this);
@@ -227,8 +278,7 @@ public class GridActivity extends Activity {
 		TextView text = (TextView)dialog.findViewById(R.id.winner_text);
 		text.setText(winner);		
 		// Display the Dialog.
-		dialog.show();
-		
+		dialog.show();		
 		
 		
 /*		works	
@@ -243,7 +293,7 @@ public class GridActivity extends Activity {
 
 	public void exit() {
 		//end thread
-		 gamePointer.endGame();
+		 //gamePointer.endGame();
 		 // finish
 		 this.finish();
 		

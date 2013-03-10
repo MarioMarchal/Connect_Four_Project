@@ -8,7 +8,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -73,26 +72,15 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		 theToken.setBitmap(redToken);
 		 
 		 rowHeight = h;
-		 theGrid = new Grid(this, gridSquareBitmap, redsquare, blacksquare, dropsquare, h, w);
+		 theGrid = new Grid(this, gridSquareBitmap, redsquare, blacksquare, dropsquare, h, w);		 
 		 
+		 /////////////////// LOAD from saved state		 
+		 ((GridActivity) gridActivity).loadSavedState();
+		 created = true;
 		 
-		 ///////////////////
-		 SharedPreferences storageFile = ((Activity) gridActivity).getPreferences(Context.MODE_PRIVATE);
-		 String GRID_STATE = "gridstate";
+		 Log.d(TAG, "Grid is created and fully loaded!!!");
 		 
-	  	// Restore state members from saved instance
-	  	int[] temp = new int[42];
-	  	
-	  	for (int i = 0; i < temp.length; i++){
-	  		temp[i] = storageFile.getInt((GRID_STATE + i), 0);	  		
-	  	}
-	  	
-	  	//make sure the surface and grid are created	  	
-	    theGrid.setCurrentState(temp);
-	  
-		 
-		 
-		 
+		 return;		 
 	 }
 	 
 	 
@@ -137,7 +125,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		  thread.start();
 	  }
 		
-	  created = true;
+	  
 	  
 	  
 	  
@@ -209,6 +197,21 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	 //method that changes the current player
 	 public void changePlayer(){
 		 if (currentplayer == 1){
+			 currentplayer = 2;
+			 theToken.setBitmap(blackToken);
+		 }
+		 else{
+			 currentplayer = 1;
+			 theToken.setBitmap(redToken);
+		 }		 
+		 //re-initialize the token to start location
+		 theToken.setX(30);
+		 theToken.setY(30);
+	 }
+	 
+	 
+	 protected void setPlayer(int i){
+		 if (i == 2){
 			 currentplayer = 2;
 			 theToken.setBitmap(blackToken);
 		 }

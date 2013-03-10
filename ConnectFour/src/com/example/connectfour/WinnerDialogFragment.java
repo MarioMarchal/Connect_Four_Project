@@ -1,7 +1,6 @@
 package com.example.connectfour;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -45,21 +44,22 @@ public class WinnerDialogFragment extends DialogFragment {
         
         	.setPositiveButton(R.string.new_game, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
-                       // reset the game
-                	   int[] temp = new int[42];
-                	   ((GridActivity) getActivity()).gamePointer.theGrid.setCurrentState(temp);
-                	   
-                	   ((GridActivity) getActivity()).reset();
-                	   
+                       // reset the game  
+                	   ((GridActivity) getActivity()).reset();                	   
                    }
                })
                
                .setNegativeButton(R.string.exit, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // Exit
-                	   int[] temp = new int[42];
-                	   ((GridActivity) getActivity()).gamePointer.theGrid.setCurrentState(temp);
-                	   ((GridActivity) getActivity()).exit();
+                	   //int[] temp = new int[42];
+                	   //((GridActivity) getActivity()).gamePointer.theGrid.setCurrentState(temp);
+                	   
+                	   ((GridActivity) getActivity()).reset();
+                	   
+                	   
+                	   
+                	   ((GridActivity) getActivity()).onBackPressed();
                    }
                });
         // Create the AlertDialog object and return it

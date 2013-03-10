@@ -285,11 +285,10 @@ protected int[] columnFill = {0, 0, 0, 0, 0, 0, 0};	// stores how full each colu
  				 }	 
  			 }	 	
  			return temp;
- 		}
+ 	}
  	
  	//
- 	public void setCurrentState(int[] temp) {
- 		
+ 	public void setCurrentState(int[] temp) { 		
 			// convert from 1 dimensional array to 2 dimension		 	
 		 	for(int i = 0; i < 6; i++){		// loop for rows
 				 for(int k = 0; k < 7; k++){	//loop for columns					
@@ -297,8 +296,74 @@ protected int[] columnFill = {0, 0, 0, 0, 0, 0, 0};	// stores how full each colu
 				 }	 
 			 }	 	
 			return;			
-		}
+	}
  	 
+ 	
+ 	//
+	 public int[] getPlayer1Grid() {
+			// convert from 2 dimensional array to single dimension and return
+		 	int[] temp = new int[42];
+		 	for(int i = 0; i < 6; i++){		// loop for rows
+				 for(int k = 0; k < 7; k++){	//loop for columns
+					 // 
+					//temp[i+k] = currentState[i][k];
+					temp[i+k+(i*6)] = player1Grid[i][k];
+				 }	 
+			 }	 	
+			return temp;
+	}
+	
+	//
+	public void setPlayer1Grid(int[] temp) { 		
+			// convert from 1 dimensional array to 2 dimension		 	
+		 	for(int i = 0; i < 6; i++){		// loop for rows
+				 for(int k = 0; k < 7; k++){	//loop for columns					
+					player1Grid[i][k] = temp[i+k+(i*6)];		 
+				 }	 
+			 }	 	
+			return;			
+	}
+	
+	//
+	 public int[] getPlayer2Grid() {
+			// convert from 2 dimensional array to single dimension and return
+		 	int[] temp = new int[42];
+		 	for(int i = 0; i < 6; i++){		// loop for rows
+				 for(int k = 0; k < 7; k++){	//loop for columns
+					 // 
+					//temp[i+k] = currentState[i][k];
+					temp[i+k+(i*6)] = player2Grid[i][k];
+				 }	 
+			 }	 	
+			return temp;
+	}
+	
+	//
+	public void setPlayer2Grid(int[] temp) { 		
+			// convert from 1 dimensional array to 2 dimension		 	
+		 	for(int i = 0; i < 6; i++){		// loop for rows
+				 for(int k = 0; k < 7; k++){	//loop for columns					
+					player2Grid[i][k] = temp[i+k+(i*6)];		 
+				 }	 
+			 }	 	
+			return;			
+	}
+	
+	
+	//
+	 public int[] getColumnFill() {
+			//	 	
+			return columnFill;
+	}
+	
+	//
+	public void setColumnFill(int[] temp) { 		
+			//		 	
+		 	for(int i = 0; i < 7; i++){		// 				 					
+				columnFill[i] = temp[i];				 	 
+			 }	 	
+			return;			
+	}
  	 
 
 }
