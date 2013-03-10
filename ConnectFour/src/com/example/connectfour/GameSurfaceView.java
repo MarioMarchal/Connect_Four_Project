@@ -31,7 +31,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	 private Bitmap redsquare = (BitmapFactory.decodeResource(getResources(), R.drawable.redsquare));
 	 private Bitmap blacksquare = (BitmapFactory.decodeResource(getResources(), R.drawable.blacksquare));
 	 private Bitmap dropsquare = (BitmapFactory.decodeResource(getResources(), R.drawable.dropsquare));
-	 private Bitmap exitBitmap = (BitmapFactory.decodeResource(getResources(), R.drawable.exit));
+	 //private Bitmap exitBitmap = (BitmapFactory.decodeResource(getResources(), R.drawable.exit));
 	 private Bitmap redToken = (BitmapFactory.decodeResource(getResources(), R.drawable.redtoken));
 	 private Bitmap blackToken = (BitmapFactory.decodeResource(getResources(), R.drawable.blacktoken));
 	 
@@ -52,7 +52,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	  getHolder().addCallback(this);
 
 	  // create a token and load bitmap	  	  
-	  theToken = new Token(redToken, 30, 30);
+	  theToken = new Token(redToken, 50, 50);
 
 	  // create the game loop thread
 	  thread = new GameThread(getHolder(), this);
@@ -124,14 +124,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		  thread.setRunning(true);
 		  thread.start();
 	  }
-		
-	  
-	  
-	  
-	  
-	  
-	  
-	  
+		 
 	 }
 	 
 
@@ -160,16 +153,18 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	   // delegating event handling to the grid
 	   theToken.handleActionDown((int)event.getX(), (int)event.getY());
 
+	   /*
 	   // check if in the lower part of the screen we exit
 	   if (event.getY() > getHeight() - rowHeight) {
 	    thread.setRunning(false);
 	    ((Activity)getContext()).finish();
-	   } else {
-	    Log.d(TAG, "Coords: x=" + event.getX() + ",y=" + event.getY());
 	   }
+	   */
+	   Log.d(TAG, "Coords: x=" + event.getX() + ",y=" + event.getY());
 	  }	  	  
 	  
-	  //
+	  
+		 //dragging movement
 	  if (event.getAction() == MotionEvent.ACTION_MOVE) {
 	   // the gestures
 	   if (theToken.isTouched()) {
@@ -205,8 +200,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 			 theToken.setBitmap(redToken);
 		 }		 
 		 //re-initialize the token to start location
-		 theToken.setX(30);
-		 theToken.setY(30);
+		 theToken.setX(50);
+		 theToken.setY(50);
 	 }
 	 
 	 
@@ -220,8 +215,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 			 theToken.setBitmap(redToken);
 		 }		 
 		 //re-initialize the token to start location
-		 theToken.setX(30);
-		 theToken.setY(30);
+		 theToken.setX(50);
+		 theToken.setY(50);
 	 }
 	 
 	 // returns the currentplayer
@@ -229,8 +224,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		 return currentplayer;
 	 }
 	 
+	 
 	 // Draws all the elements to the surface
-	 protected void draw(Canvas canvas, Rect exitCanvas) {
+	 public void draw(Canvas canvas){//, Rect exitCanvas) {
 	  // fills the canvas with white
 	  canvas.drawColor(Color.WHITE);	  	  
 	  
@@ -241,7 +237,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	  theToken.draw(canvas);
 	  
 	  //Draw "Exit" at bottom of screen
-	  canvas.drawBitmap(exitBitmap, null, exitCanvas, null);
+	  //canvas.drawBitmap(exitBitmap, null, exitCanvas, null);
 	  
 	  //Draw the current player to the screen
 	  Paint textPaint = new Paint();

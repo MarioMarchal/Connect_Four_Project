@@ -1,26 +1,57 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     android:orientation="horizontal" >
 
-    <TextView
+    <ImageView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="false"
-        android:text="@string/welcome"
-        android:textAlignment="center"
-        android:textSize="50sp" />
+        android:layout_marginTop="28dp"
+        android:src="@drawable/title" />
 
     <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="19dp"
+        android:id="@+id/play"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:onClick="sendMessage"
         android:text="@string/button_OK" />
+
+    <Button
+        android:id="@+id/help"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/play"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:onClick="sendMessage"
+        android:text="@string/help" />
+
+    <Button
+        android:id="@+id/about"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/help"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:onClick="sendMessage"
+        android:text="@string/about" />
+    
+    <Button
+        android:id="@+id/exit"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/about"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:onClick="sendMessage"
+        android:text="@string/quit" />
 
 </RelativeLayout>

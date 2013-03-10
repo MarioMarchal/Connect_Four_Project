@@ -47,17 +47,17 @@ public class GameThread extends Thread {
 		    //get size of canvas and make a rect for each component
 		      int h = canvas.getHeight();
 		  	  int w = canvas.getWidth();
-		  	  int rowheight = h/9;
+		  	  int rowheight = h/8;
 		  	  int columnwidth = w/7;
 		  	  
 		  	  // the rect fo the exit button
-		  	  exitRec = new Rect(0, (h-rowheight), w, h);
+		  	  //exitRec = new Rect(0, (h-rowheight), w, h);
 		  	  
 		  	  // set the token size
 		  	 this.gamePanel.setSizes((rowheight), (columnwidth));
 		  	  
 		     // draws the canvas on the panel
-		     this.gamePanel.draw(canvas, exitRec);
+		     this.gamePanel.draw(canvas);//, exitRec);
 		    }
 		   } finally {
 		    // in case of an exception the surface is not left in
@@ -77,7 +77,7 @@ public class GameThread extends Thread {
 		    synchronized (surfaceHolder) {
 		     // update game state
 		     // draws the canvas on the panel
-		     this.gamePanel.draw(canvas, exitRec);
+		     this.gamePanel.draw(canvas);//, exitRec);
 		    }
 		   } finally {
 		    // in case of an exception the surface is not left in

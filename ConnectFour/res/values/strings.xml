@@ -15,5 +15,8 @@
     <string name="new_game">Play Again</string>
     <string name="exit">Exit</string>
     <string name="winner_text">Player ? wins!</string>
+    <string name="help">How to play</string>
+    <string name="about">About</string>
+    <string name="quit">Quit</string>
 
 </resources>

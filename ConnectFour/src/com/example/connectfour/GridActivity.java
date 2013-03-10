@@ -3,14 +3,14 @@ package com.example.connectfour;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
+
 
 
 public class GridActivity extends Activity {
@@ -46,29 +46,14 @@ public class GridActivity extends Activity {
     	
     	ActionBar actionBar = getActionBar();
     	//actionBar.setDisplayShowTitleEnabled(false);
-    	actionBar.setSubtitle("Play fool!");
-    	actionBar.setTitle("You playin Line 'Em Up!!");
+    	actionBar.setSubtitle("Drag the token to the top of a column...");
+    	actionBar.setTitle("You're playin Line 'Em Up!!");
     	
     	//enable the icon in the action bar to be a home button
     	actionBar.setHomeButtonEnabled(true);
     	
-    	/*
-    	actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-    	
-    	Tab tabOne = actionBar.newTab();
-    	
-    	tabOne	.setText("First Tab")
-		    	.setIcon(R.drawable.dropsquare)
-		    	.setContentDescription("Tab the First");
-		    	//.setTabListener(null);//(new TabListener<MyFragment>(this, R.id.fragmentContainer, MyFragment.class));
-    	
-    	actionBar.addTab(tabOne);
-    	*/
-    	
     	// Show the Action Bar
     	actionBar.show();
-    	
-    	
     	
         // set our MainGamePanel as the View
         gamePointer = new GameSurfaceView(this);
@@ -81,17 +66,34 @@ public class GridActivity extends Activity {
     /** action bar related**/
     
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_grid, menu);
+        return true;
+    }
+    
+    
+    @SuppressLint("NewApi")
+	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 		    case (android.R.id.home) :
 		    	this.onBackPressed();
 			    return true;
+		    
+		    case (R.id.help) :		    	
+		    	HelpDialogFragment helpDialog = new HelpDialogFragment();				
+				helpDialog.show(fragmentManager, "tag");
+			    return true; 
+		    
+		    case (R.id.restart) :
+		    	this.reset();
+			    return true;
+			    
 		    default:
 		    	return super.onOptionsItemSelected(item);
 	    }
     }
-    
-    
     
     
     
@@ -264,39 +266,13 @@ public class GridActivity extends Activity {
 		
 		WinnerDialogFragment winnerDialog = new WinnerDialogFragment();
 		winnerDialog.setMessage(winner);
-		//winnerDialog.setStyle(2, );
 		winnerDialog.show(fragmentManager, "tag");
 			
-/*
-		// Create the new Dialog.
-		Dialog dialog = new Dialog(this);
-		// Set the title.
-		dialog.setTitle("Game Over");
-		// Inflate the layout.
-		dialog.setContentView(R.layout.dialog_view);
-		// Update the Dialog’s contents.
-		TextView text = (TextView)dialog.findViewById(R.id.winner_text);
-		text.setText(winner);		
-		// Display the Dialog.
-		dialog.show();		
-		
-		
-/*		works	
-		Intent intent = new Intent(this, DisplayMessageActivity.class);
-		
-		String message = winner;
-		intent.putExtra(EXTRA_MESSAGE, message);
-		
-		startActivity(intent);
-		*/
 	}
 
 	public void exit() {
-		//end thread
-		 //gamePointer.endGame();
 		 // finish
-		 this.finish();
-		
+		 this.finish();		
 	}
 	
 }

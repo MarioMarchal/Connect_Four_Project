@@ -49,10 +49,13 @@ protected int[] columnFill = {0, 0, 0, 0, 0, 0, 0};	// stores how full each colu
  
  // Function to draw the Grid
  public void draw(Canvas canvas) {	 
+	 
+	 /*
 	 //draw the token drop indicators
 	 for(int i = 0; i < 7; i++){
 		 canvas.drawBitmap(dropsquare,  (i * columnWidth), (rowHeight), null);
 	 }
+	 */
 	 
 	 Bitmap temp = emptysquare;	 
 	 // draw the grid
@@ -209,15 +212,16 @@ protected int[] columnFill = {0, 0, 0, 0, 0, 0, 0};	// stores how full each colu
 		 			for(int row = 0; row < 6; row++){
 		 				if(board[row][column] == 1){
 		 					count++;
-		 				}
-		 				else if(count != 4){ //Re-initialize count if 0 found in column
+		 					if (count == 4){
+		 						return true;
+		 					}
+		 				}		 				
+		 				else{ //if(count != 4){ //Re-initialize count if 0 found in column
 		 					count = 0;
 		 				}				 
 		 			}
-		 			if (count == 4){
-		 				return true;
-		 			}
 		 		}
+		 			//Log.d(TAG, "** count is " + count);
 		 		return false;
 		 	}
 
