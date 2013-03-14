@@ -2,13 +2,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".GridActivity" >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.example.connectfour.GameSurfaceView
+        android:id="@+id/GameSurfaceView1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world" />
+        android:layout_above="@+id/linearLayout1"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/restartgame"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="restartAction"
+            android:text="Restart Game" />
+
+        <Button
+            android:id="@+id/resetscore"
+            android:layout_weight="1"
+            android:layout_width="0dp"            
+            android:layout_height="wrap_content"
+            android:onClick="resetScoreAction"
+            android:text="Reset Score" />
+        
+        <Button
+            android:id="@+id/help"
+            android:layout_weight="1"
+        	android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="helpAction"           
+            android:text="Help" />  
+
+    </LinearLayout>
 
 </RelativeLayout>

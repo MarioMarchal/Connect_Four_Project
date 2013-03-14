@@ -3,9 +3,11 @@ package com.example.connectfour;
 import com.example.connectfour.model.Grid;
 import com.example.connectfour.model.Token;
 
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -34,10 +36,59 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	 //private Bitmap exitBitmap = (BitmapFactory.decodeResource(getResources(), R.drawable.exit));
 	 private Bitmap redToken = (BitmapFactory.decodeResource(getResources(), R.drawable.redtoken));
 	 private Bitmap blackToken = (BitmapFactory.decodeResource(getResources(), R.drawable.blacktoken));
+	 private Bitmap background = (BitmapFactory.decodeResource(getResources(), R.drawable.background));
 	 
 	 private int rowHeight = 0;
 	 private int currentplayer;
 	 protected boolean created;
+	 
+	 
+	 
+	 
+	 public GameSurfaceView(Context context, AttributeSet attrs, int defStyle) {
+		    super(context, attrs, defStyle);
+		    // TODO Auto-generated constructor stub
+		    
+		    gridActivity = context;
+			created = false;
+			 
+		  // adding the callback (this) to the surface holder to intercept events
+		  getHolder().addCallback(this);
+
+		  // create a token and load bitmap	  	  
+		  theToken = new Token(redToken, 50, 50);
+
+		  // create the game loop thread
+		  thread = new GameThread(getHolder(), this);
+
+		  // make the GamePanel focusable so it can handle events
+		  setFocusable(true);
+		 
+	 }
+
+	 public GameSurfaceView(Context context, AttributeSet attrs) {
+		    super(context, attrs);
+		    // TODO Auto-generated constructor stub
+		    
+		    gridActivity = context;
+			 created = false;
+			 
+		  // adding the callback (this) to the surface holder to intercept events
+		  getHolder().addCallback(this);
+
+		  // create a token and load bitmap	  	  
+		  theToken = new Token(redToken, 50, 50);
+
+		  // create the game loop thread
+		  thread = new GameThread(getHolder(), this);
+
+		  // make the GamePanel focusable so it can handle events
+		  setFocusable(true);
+		 
+	 }
+	 
+	 
+	 
 	 
 	 //Constructor
 	 public GameSurfaceView(Context context) {
@@ -226,31 +277,47 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	 
 	 
 	 // Draws all the elements to the surface
-	 public void draw(Canvas canvas){//, Rect exitCanvas) {
+	 @SuppressLint("NewApi")
+	public void draw(Canvas canvas){//, Rect exitCanvas) {
+	  
+		  
 	  // fills the canvas with white
-	  canvas.drawColor(Color.WHITE);	  	  
+	  //canvas.drawColor(Color.WHITE);
 	  
-	  //draw the grid
-	  theGrid.draw(canvas);	  
+	  int height = canvas.getHeight();//MaximumBitmapHeight();
+	  int width = canvas.getWidth();//MaximumBitmapWidth();	  
+	  Rect backgroundRec = new Rect(0, 0, width, height);
 	  	  
-	  //add a token to canvas
-	  theToken.draw(canvas);
+	  //Bitmap backgroundBitmap = Bitmap.createScaledBitmap(temp, width, height, true);	  
+	  //canvas.drawBitmap(temp, backgroundRec, 0, null);
+	  canvas.drawBitmap(background, null, backgroundRec, null);
 	  
-	  //Draw "Exit" at bottom of screen
-	  //canvas.drawBitmap(exitBitmap, null, exitCanvas, null);
 	  
-	  //Draw the current player to the screen
-	  Paint textPaint = new Paint();
-	  textPaint.setTextSize(50);
-	  if (currentplayer == 1){
-		  textPaint.setColor(Color.RED);
-		  canvas.drawText("Player 1", 250, 50, textPaint);
+	  
+	  if (created){
+		  //draw the grid
+		  theGrid.draw(canvas);	  
+		  	  
+		  //add a token to canvas
+		  theToken.draw(canvas);
+		  
+		  //Draw "Exit" at bottom of screen
+		  //canvas.drawBitmap(exitBitmap, null, exitCanvas, null);
+		  
+		  //Draw the current player to the screen
+		  Paint textPaint = new Paint();
+		  textPaint.setTextSize(50);
+		  if (currentplayer == 1){
+			  textPaint.setColor(Color.RED);
+			  canvas.drawText("Player 1", 250, 50, textPaint);
+		  }
+		  else{
+			  textPaint.setColor(Color.BLACK);
+			  canvas.drawText("Player 2", 250, 50, textPaint);
+		  }	  
 	  }
-	  else{
-		  textPaint.setColor(Color.BLACK);
-		  canvas.drawText("Player 2", 250, 50, textPaint);
-	  }	  
-	 
+	  
+	  
 	 }
 	
 	

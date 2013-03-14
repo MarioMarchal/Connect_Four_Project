@@ -37,8 +37,8 @@
         <activity
             android:name="com.example.connectfour.GridActivity"
             android:label="@string/title_activity_grid" 
-            android:screenOrientation="portrait"
-            android:uiOptions="splitActionBarWhenNarrow">
+            android:screenOrientation="portrait">
+            
         </activity>
     </application>
 

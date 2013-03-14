@@ -10,6 +10,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 
 
 
@@ -24,54 +28,76 @@ public class GridActivity extends Activity {
 	protected GameSurfaceView gamePointer; 
 	
 	
-	@Override
-	// 
-    public void onBackPressed() {		
-		this.exit();
-    }
-	
-	
     @SuppressLint("NewApi")
 	@Override
     public void onCreate(Bundle savedInstanceState) {    	
-    	Log.d(TAG, "onCreat of GridActivity");
-    	super.onCreate(savedInstanceState);    	
-    	   
-        // requesting to turn the title OFF
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+    	Log.d(TAG, "onCreate of GridActivity");
+    	super.onCreate(savedInstanceState);
+    
+    	
+    	// requesting to turn the title OFF
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         // making it full screen
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);    	
     	
-    	
+		/*
     	ActionBar actionBar = getActionBar();
     	//actionBar.setDisplayShowTitleEnabled(false);
-    	actionBar.setSubtitle("Drag the token to the top of a column...");
-    	actionBar.setTitle("You're playin Line 'Em Up!!");
-    	
+    	//actionBar.setSubtitle("Drag the token to the top of a column...");
+    	actionBar.setTitle("You're playin Line 'Em Up!");    	
     	//enable the icon in the action bar to be a home button
     	actionBar.setHomeButtonEnabled(true);
-    	
     	// Show the Action Bar
-    	actionBar.show();
+    	actionBar.show();    	
+    	*/
     	
         // set our MainGamePanel as the View
-        gamePointer = new GameSurfaceView(this);
-        setContentView(gamePointer);
+        //gamePointer = new GameSurfaceView(this);        
+        
+        
+        setContentView(R.layout.activity_grid);
+    	gamePointer = (GameSurfaceView) findViewById(R.id.GameSurfaceView1);
+        //setContentView(gamePointer);
         
         Log.d(TAG, "View added");        
-        
     }
    
-    /** action bar related**/
     
+    
+    // Called when the user clicks the restart game button 
+	public void restartAction(View view) {
+	    // Do something in response to button
+		this.reset();		
+	}
+    
+    
+	// Called when the user clicks the reset score button 
+	public void resetScoreAction(View view) {
+	    // Do something in response to button
+		
+		
+	}
+    
+	// Called when the user clicks the help button 
+	@SuppressLint("NewApi")
+	public void helpAction(View view) {
+	    // Do something in response to button
+		HelpDialogFragment helpDialog = new HelpDialogFragment();				
+		helpDialog.show(fragmentManager, "tag");		
+	}
+    
+	
+	
+    
+    /** action bar related**/
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_grid, menu);
         return true;
     }
-    
+    */
     
     @SuppressLint("NewApi")
 	@Override
@@ -197,6 +223,14 @@ public class GridActivity extends Activity {
     
      
     /////////////
+    
+    @Override
+	// 
+    public void onBackPressed() {		
+		this.exit();
+    }
+    
+    
     protected void onResume(){
     	Log.d(TAG, "onResume called...");
   	  	super.onResume();	    
@@ -254,9 +288,12 @@ public class GridActivity extends Activity {
 		 //end thread
 		 gamePointer.endGame();		 
 		  
-		 // create new game surface
-		 gamePointer = new GameSurfaceView(this);
-		 setContentView(gamePointer);
+		 // create new game surface		 
+		 //gamePointer = new GameSurfaceView(this);
+		 //setContentView(gamePointer);
+		 
+		 setContentView(R.layout.activity_grid);
+		 gamePointer = (GameSurfaceView) findViewById(R.id.GameSurfaceView1);
 	 }
 	 
 	
